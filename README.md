@@ -1,0 +1,1 @@
+this is a sample codestar-connection from Github to CodeBuild
