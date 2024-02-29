@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - pip install -r requirements.txt
+  pre_build:
+    commands:
+      - coverage erase
+      - pre-commit run --all-files
+      # - pytest
+      - cat README.md
+  build:
+    commands:
+      - coverage run -m pytest
+      - coverage report
+      - git log | head -100
+      - git status
+      - ls
+      - git archive --format=zip HEAD > application.zip
+
+artifacts:
+  files:
+    - application.zip
