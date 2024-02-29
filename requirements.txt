@@ -1,6 +1,7 @@
 blinker==1.7.0
 cfgv==3.4.0
 click==8.1.7
+coverage==7.4.3
 distlib==0.3.8
 exceptiongroup==1.2.0
 filelock==3.13.1
