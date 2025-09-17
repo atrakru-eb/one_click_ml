@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  variables:
+    MODEL_NAME: "ml-model"
+    SAGEMAKER_ROLE_ARN: "arn:aws:iam::ACCOUNT:role/SageMakerExecutionRole"
+
 phases:
   install:
     runtime-versions:
@@ -10,12 +15,16 @@ phases:
     commands:
       - coverage erase
       - pre-commit run --all-files
-      # - pytest
+      - python model/train.py
       - cat README.md
   build:
     commands:
       - coverage run -m pytest
       - coverage report
+      - echo "Training and testing ML model..."
+      - python model/train.py
+      - echo "Deploying to SageMaker..."
+      - python sagemaker/deploy.py --model-name $MODEL_NAME --role-arn $SAGEMAKER_ROLE_ARN
       - git log | head -100
       - git status
       - ls
@@ -24,3 +33,4 @@ phases:
 artifacts:
   files:
     - application.zip
+    - model.tar.gz
